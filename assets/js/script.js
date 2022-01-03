@@ -6,7 +6,13 @@ var taskFormHandler = function() {
     
     var taskNameInput = document.querySelector("input[name='task-name']").value;
     var taskTypeInput = document.querySelector("select[name='task-type']").value;
-   
+    
+    if (!taskNameInput || !taskTypeInput) {
+        alert("The task cannot be blank!");
+        return false;
+    }
+    formEl.reset();
+    
     // package data as an object
     var taskDataObj = {
         name: taskNameInput,
@@ -27,7 +33,7 @@ var createTaskEl = function(taskDataObj) {
     // give it a class name
     taskInfoEl.className = "task-info";
     // add HTML content to div
-    taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span>"
+    taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.typeg + "</span>"
     listItemEl.appendChild(taskInfoEl);
     // add entire list item to list
     taskToDoEl.appendChild(listItemEl);
