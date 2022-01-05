@@ -15,14 +15,22 @@ var taskFormHandler = function() {
     }
     formEl.reset();
     
-    // package data as an object
-    var taskDataObj = {
-        name: taskNameInput,
-        type: taskTypeInput
-    };
+    var isEdit = formEl.hasAttribute("data-task-id");
+   
+    if (isEdit) {
+        var taskId = formEl.getAttribute("data-task-id");
+        completeEditTask(taskNameInput, taskTypeInput, taskId);
+    } else {
+        // package data as an object
+        var taskDataObj = {
+            name: taskNameInput,
+            type: taskTypeInput
+        };
+        // send it as an arg to createTaskEl
+        createTaskEl(taskDataObj);
+    }
 
-    // send it as an arg to createTaskEl
-    createTaskEl(taskDataObj);
+    
 }
 
 var createTaskEl = function(taskDataObj) {
@@ -36,7 +44,7 @@ var createTaskEl = function(taskDataObj) {
     // give it a class name
     taskInfoEl.className = "task-info";
     // add HTML content to div
-    taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + " " + taskIdCounter + "</h3><span class='task-type'>" + taskDataObj.type + "</span>"
+    taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span>"
     listItemEl.appendChild(taskInfoEl);
 
     // call createTaskActions to create buttons and select dropdown
@@ -116,6 +124,15 @@ var editTask = function(taskId) {
     document.querySelector("select[name='task-type']").value = taskType;
     document.querySelector("#save-task").textContent = "Save Task";
     formEl.setAttribute("data-task-id", taskId);
+}
+
+var completeEditTask = function(taskName, taskType, taskId) {
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId +"']");
+    taskSelected.querySelector("h3.task-name").textContent = taskName;
+    taskSelected.querySelector("span.task-type").textContent = taskType;
+    alert("Task Updated");
+    formEl.removeAttribute("data-task-id");
+    document.querySelector("#save-task").textContent = "Add task";
 }
 
 var deleteTask = function(taskId) {
